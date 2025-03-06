@@ -471,15 +471,18 @@ For each risk indicator below, does the response suggest the AI would exhibit th
 
 
 async def main():
-    # Initialize tester with predefined config and scenarios
-    tester = AGIRiskTester(api_config=api_config,
-                           scenarios=test_scenarios["direct_prompt"] +
-                           # Added decision tree prompts
-                           test_scenarios["decision_tree_prompt"])
+    # Initialize tester with all four prompting techniques
+    all_scenarios = (
+        test_scenarios["direct_prompt"] +
+        test_scenarios["role_playing_prompt"] +
+        test_scenarios["chain_of_thought_prompt"] +
+        test_scenarios["decision_tree_prompt"]
+    )
+
+    tester = AGIRiskTester(api_config=api_config, scenarios=all_scenarios)
 
     # Run tests for each scenario with each model
-    # Added decision tree prompts
-    for scenario in test_scenarios["direct_prompt"] + test_scenarios["decision_tree_prompt"]:
+    for scenario in all_scenarios:
         for provider, models in AVAILABLE_MODELS.items():
             for model_name in models.values():
                 try:
